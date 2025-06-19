@@ -1,0 +1,17 @@
+[gd_resource type="Resource" script_class="EnemyAffix" load_steps=2 format=3 uid="uid://cp8f1lvnmhcnn"]
+
+[ext_resource type="Script" uid="uid://xper6awpnir7" path="res://scenes/units/enemies/scripts/enemy_affix.gd" id="1_aff"]
+
+[resource]
+script = ExtResource("1_aff")
+affix_name = "Sprinter"
+type = 0
+hp_multiplier = 1.0
+damage_multiplier = 1.0
+damage_reduction_add = 0.0
+ap_delta = 0
+mp_delta = 2
+range_delta = 0
+heal_multiplier = 1.0
+applies_status = ""
+metadata/_custom_type_script = "uid://xper6awpnir7"

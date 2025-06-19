@@ -1,0 +1,17 @@
+[gd_resource type="Resource" script_class="EnemyAffix" load_steps=2 format=3 uid="uid://12iujfn2mw8r"]
+
+[ext_resource type="Script" uid="uid://xper6awpnir7" path="res://scenes/units/enemies/scripts/enemy_affix.gd" id="1_cpr8c"]
+
+[resource]
+script = ExtResource("1_cpr8c")
+affix_name = "Tank"
+type = 0
+hp_multiplier = 1.0
+damage_multiplier = 1.0
+damage_reduction_add = 10.0
+ap_delta = 0
+mp_delta = 0
+range_delta = 0
+heal_multiplier = 1.0
+applies_status = ""
+metadata/_custom_type_script = "uid://xper6awpnir7"

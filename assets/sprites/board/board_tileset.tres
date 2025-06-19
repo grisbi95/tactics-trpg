@@ -1,0 +1,28 @@
+[gd_resource type="TileSet" load_steps=3 format=3 uid="uid://b7ydiu6ywniae"]
+
+[ext_resource type="Texture2D" uid="uid://do8v1f1bdseep" path="res://assets/sprites/board/boar_tileset.png" id="1_xo0td"]
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_7mpj0"]
+texture = ExtResource("1_xo0td")
+texture_region_size = Vector2i(32, 32)
+0:0/0 = 0
+0:0/0/texture_origin = Vector2i(0, -8)
+1:0/0 = 0
+1:0/0/texture_origin = Vector2i(0, -8)
+2:0/0 = 0
+2:0/0/texture_origin = Vector2i(0, -8)
+3:0/0 = 0
+3:0/0/texture_origin = Vector2i(0, -8)
+0:1/0 = 0
+1:1/0 = 0
+1:1/0/texture_origin = Vector2i(0, -8)
+0:2/0 = 0
+0:2/0/texture_origin = Vector2i(0, -8)
+1:2/0 = 0
+1:2/0/texture_origin = Vector2i(0, -8)
+
+[resource]
+tile_shape = 1
+tile_layout = 5
+tile_size = Vector2i(32, 16)
+sources/0 = SubResource("TileSetAtlasSource_7mpj0")

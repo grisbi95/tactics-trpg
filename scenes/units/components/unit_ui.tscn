@@ -1,0 +1,48 @@
+[gd_scene load_steps=3 format=3 uid="uid://bqhae7kw206j7"]
+
+[ext_resource type="Script" uid="uid://b21vuq1p6r3nr" path="res://scenes/units/components/unit_ui.gd" id="1_l3e6q"]
+[ext_resource type="Texture2D" uid="uid://bjg4fwk4hs18r" path="res://arts/UI/pixel_aventure/Tiles/Small tiles/Thin outline/tile_0101.png" id="2_y85dm"]
+
+[node name="UnitUI" type="Node2D"]
+script = ExtResource("1_l3e6q")
+
+[node name="VboxContainer" type="VBoxContainer" parent="."]
+z_index = 60
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -20.0
+offset_top = -20.0
+offset_right = 20.0
+offset_bottom = -5.0
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_constants/separation = 0
+alignment = 1
+
+[node name="UnitName" type="Label" parent="VboxContainer"]
+layout_mode = 2
+theme_override_constants/outline_size = 4
+theme_override_font_sizes/font_size = 16
+text = "Monstre Lvl. 5"
+horizontal_alignment = 1
+
+[node name="HealthContainer" type="HBoxContainer" parent="VboxContainer"]
+layout_mode = 2
+alignment = 1
+
+[node name="HealthIcon" type="TextureRect" parent="VboxContainer/HealthContainer"]
+layout_mode = 2
+texture = ExtResource("2_y85dm")
+stretch_mode = 5
+
+[node name="HealthLabel" type="Label" parent="VboxContainer/HealthContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 1
+theme_override_constants/outline_size = 4
+text = "50"
+horizontal_alignment = 1
+vertical_alignment = 1

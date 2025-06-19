@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="EnemyRole" load_steps=2 format=3 uid="uid://cnudada8m2osy"]
+
+[ext_resource type="Script" uid="uid://bh8tcbbgq2xt6" path="res://scenes/units/enemies/scripts/enemy_role.gd" id="1_s2wx2"]
+
+[resource]
+script = ExtResource("1_s2wx2")
+role_name = "Support"
+base_hp_multiplier = 1.01
+base_damage_percent_multiplier = 1.01
+base_damage_reduction_percent_multiplier = 1.01
+base_action_points = 6
+base_movement_points = 3
+metadata/_custom_type_script = "uid://bh8tcbbgq2xt6"

@@ -1,0 +1,42 @@
+[gd_scene load_steps=3 format=3 uid="uid://0lww342eecx8"]
+
+[ext_resource type="Script" path="res://scenes/units/components/status_manager/status_effect_ui.gd" id="1_status_effect_ui"]
+[ext_resource type="Texture2D" uid="uid://oc6dfaeffjan" path="res://arts/rpg_icon/RPG Icon Pack - 100+ Dark Fantasy Equipment/16x16/tile006.png" id="2_default_icon"]
+
+[node name="StatusEffectUI" type="Control"]
+layout_mode = 3
+anchors_preset = 0
+script = ExtResource("1_status_effect_ui")
+
+[node name="Icon" type="TextureRect" parent="."]
+custom_minimum_size = Vector2(16, 16)
+layout_mode = 0
+offset_right = 16.0
+offset_bottom = 16.0
+texture = ExtResource("2_default_icon")
+expand_mode = 1
+stretch_mode = 3
+
+[node name="Duration" type="Label" parent="."]
+layout_mode = 0
+offset_left = 12.0
+offset_top = 10.0
+offset_right = 24.0
+offset_bottom = 16.0
+theme_override_constants/outline_size = 2
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+text = "2"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Intensity" type="Label" parent="."]
+layout_mode = 0
+offset_left = 12.0
+offset_top = 10.0
+offset_right = 24.0
+offset_bottom = 16.0
+theme_override_constants/outline_size = 2
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+text = "3"
+horizontal_alignment = 1
+vertical_alignment = 1 

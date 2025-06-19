@@ -1,0 +1,26 @@
+[gd_scene load_steps=2 format=3 uid="uid://d3xkjahjsjc8k"]
+
+[ext_resource type="Texture2D" uid="uid://bjg4fwk4hs18r" path="res://arts/UI/pixel_aventure/Tiles/Small tiles/Thin outline/tile_0101.png" id="1_jwdv5"]
+
+[node name="StatsUI" type="HBoxContainer"]
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -2.5
+offset_right = 42.5
+offset_bottom = 16.0
+grow_horizontal = 2
+theme_override_constants/separation = 0
+alignment = 1
+
+[node name="HealthIcon" type="TextureRect" parent="."]
+layout_mode = 2
+texture = ExtResource("1_jwdv5")
+stretch_mode = 5
+
+[node name="HealthLabel" type="Label" parent="."]
+layout_mode = 2
+size_flags_vertical = 1
+text = "50"
+horizontal_alignment = 1
+vertical_alignment = 1

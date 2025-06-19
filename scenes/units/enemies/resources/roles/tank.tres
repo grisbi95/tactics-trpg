@@ -1,0 +1,20 @@
+[gd_resource type="Resource" script_class="EnemyRole" load_steps=3 format=3 uid="uid://dyo5pmjyys35x"]
+
+[ext_resource type="Script" uid="uid://xper6awpnir7" path="res://scenes/units/enemies/scripts/enemy_affix.gd" id="1_4wkyl"]
+[ext_resource type="Script" uid="uid://bh8tcbbgq2xt6" path="res://scenes/units/enemies/scripts/enemy_role.gd" id="1_xp4ex"]
+
+[resource]
+script = ExtResource("1_xp4ex")
+role_name = "Tank"
+hp_mult = 2.0
+damage_percent_mult = 1.0
+damage_reduction_percent_mult = 1.0
+heal_percent_mult = 1.0
+base_action_points = 2
+base_movement_points = 2
+damage_reduction_add = 10.0
+hp_rate = 1.06
+dmg_rate = 1.05
+dr_rate = 1.02
+allowed_affixes = Array[ExtResource("1_4wkyl")]([])
+metadata/_custom_type_script = "uid://bh8tcbbgq2xt6"

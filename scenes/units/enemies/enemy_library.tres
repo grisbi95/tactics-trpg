@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="EnemyLibrary" load_steps=8 format=3 uid="uid://bde3411407waj"]
+
+[ext_resource type="Script" uid="uid://cv6iu4jt5dr1h" path="res://scenes/units/enemies/scripts/enemy_blueprint.gd" id="1_3kodk"]
+[ext_resource type="Script" uid="uid://b3urky4x3x8f6" path="res://custom_resources/enemy_library.gd" id="2_gdljc"]
+[ext_resource type="Resource" uid="uid://bdkfipv8ayiai" path="res://scenes/units/enemies/resources/blueprint/standard/rogue.tres" id="2_qdfte"]
+[ext_resource type="Resource" uid="uid://bfbol8x6y1olf" path="res://scenes/units/enemies/resources/blueprint/support/mage.tres" id="3_jyp5q"]
+[ext_resource type="Resource" uid="uid://bw1mlddf316j7" path="res://scenes/units/enemies/resources/blueprint/swarn/goblin.tres" id="4_hsi1q"]
+[ext_resource type="Resource" uid="uid://cqhqocg42grp2" path="res://scenes/units/enemies/resources/blueprint/swarn/skeleton.tres" id="5_hy20e"]
+[ext_resource type="Resource" uid="uid://k37c1nwryurj" path="res://scenes/units/enemies/resources/blueprint/tank/knight.tres" id="6_i1nop"]
+
+[resource]
+script = ExtResource("2_gdljc")
+blueprints = Array[ExtResource("1_3kodk")]([ExtResource("2_qdfte"), ExtResource("3_jyp5q"), ExtResource("4_hsi1q"), ExtResource("5_hy20e"), ExtResource("6_i1nop")])

@@ -1,0 +1,9 @@
+[gd_scene load_steps=2 format=3 uid="uid://bqp8ahn6xw7wk"]
+
+[ext_resource type="Script" uid="uid://b5jfww0wftcam" path="res://scenes/units/components/status_manager/status_manager.gd" id="1_status_manager"]
+
+[node name="StatusManager" type="GridContainer"]
+offset_right = 40.0
+offset_bottom = 40.0
+columns = 3
+script = ExtResource("1_status_manager")

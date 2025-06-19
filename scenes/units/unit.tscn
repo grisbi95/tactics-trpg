@@ -1,0 +1,83 @@
+[gd_scene load_steps=13 format=3 uid="uid://b4fnv5wq53rir"]
+
+[ext_resource type="Script" uid="uid://w0jy2t8dqst1" path="res://scenes/units/unit.gd" id="1_amp7q"]
+[ext_resource type="Script" uid="uid://dple1takesa0m" path="res://scenes/units/components/animation_component.gd" id="1_mgebg"]
+[ext_resource type="SpriteFrames" uid="uid://ceu5llf0a5rta" path="res://scenes/units/player/player_data/player_sprite_frames.tres" id="1_vewqn"]
+[ext_resource type="Script" uid="uid://bnxvy8a8sj4mr" path="res://scenes/units/components/movement_component.gd" id="2_rk2mp"]
+[ext_resource type="Script" uid="uid://dhcobgg753kso" path="res://scenes/units/components/stats_pop_up.gd" id="3_44d7s"]
+[ext_resource type="Texture2D" uid="uid://bbbcggoxdya2u" path="res://arts/board/highlight_tiles/blank_tile.png" id="3_fe0lq"]
+[ext_resource type="FontFile" uid="uid://culdbhkjgmxnw" path="res://arts/font/monogram.ttf" id="5_lrhd0"]
+[ext_resource type="PackedScene" uid="uid://bqhae7kw206j7" path="res://scenes/units/components/unit_ui.tscn" id="6_rk2mp"]
+[ext_resource type="PackedScene" uid="uid://bqp8ahn6xw7wk" path="res://scenes/units/components/status_manager/status_manager.tscn" id="8_amp7q"]
+
+[sub_resource type="Shader" id="Shader_fe0lq"]
+code = "shader_type canvas_item;
+
+uniform vec3 outline_color: source_color;
+uniform float progress: hint_range(0.0, 1.0);
+uniform float width: hint_range(0.0, 0.006, 0.001) = 0.001;
+
+void fragment() {
+	vec4 line_neg_y = vec4(outline_color.rgb, texture(TEXTURE, vec2(UV.x, UV.y - width)).a);
+	vec4 line_pos_y = vec4(outline_color.rgb, texture(TEXTURE, vec2(UV.x, UV.y + width)).a);
+	vec4 line_neg_x = vec4(outline_color.rgb, texture(TEXTURE, vec2(UV.x - width, UV.y)).a);
+	vec4 line_pos_x = vec4(outline_color.rgb, texture(TEXTURE, vec2(UV.x + width, UV.y)).a);
+	vec4 outline_y = mix(line_neg_y, line_pos_y, line_pos_y);
+	vec4 outline_x = mix(line_neg_x, line_pos_x, line_pos_x);
+	vec4 outline = mix(outline_y, outline_x, outline_x);
+	COLOR.rgba = mix(COLOR, outline, progress * (1.0 - COLOR.a));
+}"
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_fe0lq"]
+shader = SubResource("Shader_fe0lq")
+shader_parameter/outline_color = Color(0, 0, 0, 1)
+shader_parameter/progress = 0.0
+shader_parameter/width = 0.001
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_2rcph"]
+size = Vector2(8, 6.23077)
+
+[node name="Unit" type="Area2D"]
+z_index = 50
+y_sort_enabled = true
+script = ExtResource("1_amp7q")
+metadata/_edit_group_ = true
+
+[node name="Visual" type="CanvasGroup" parent="."]
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="Visual"]
+unique_name_in_owner = true
+z_index = 11
+material = SubResource("ShaderMaterial_fe0lq")
+position = Vector2(0, -4)
+sprite_frames = ExtResource("1_vewqn")
+animation = &"HurtDown"
+
+[node name="AnimationComponent" type="Node2D" parent="."]
+script = ExtResource("1_mgebg")
+
+[node name="MovementComponent" type="Node2D" parent="."]
+z_index = 3
+y_sort_enabled = true
+script = ExtResource("2_rk2mp")
+highlight_texture = ExtResource("3_fe0lq")
+
+[node name="StatsPopUp" type="Node2D" parent="."]
+z_index = 100
+script = ExtResource("3_44d7s")
+font = ExtResource("5_lrhd0")
+
+[node name="UnitUI" parent="." node_paths=PackedStringArray("sprite_to_outline") instance=ExtResource("6_rk2mp")]
+position = Vector2(0, -11)
+scale = Vector2(0.5, 0.5)
+sprite_to_outline = NodePath("../Visual/AnimatedSprite2D")
+
+[node name="StatusManager" parent="." node_paths=PackedStringArray("owner_unit") instance=ExtResource("8_amp7q")]
+owner_unit = NodePath("..")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0, -2)
+shape = SubResource("RectangleShape2D_2rcph")
+
+[connection signal="mouse_entered" from="." to="UnitUI" method="_on_unit_mouse_entered"]
+[connection signal="mouse_exited" from="." to="UnitUI" method="_on_unit_mouse_exited"]

@@ -1,0 +1,13 @@
+[gd_scene load_steps=4 format=3 uid="uid://cjcx08j8ifnly"]
+
+[ext_resource type="PackedScene" uid="uid://b4fnv5wq53rir" path="res://scenes/units/unit.tscn" id="1_base"]
+[ext_resource type="Script" uid="uid://cbo0s4d6x3d1d" path="res://scenes/units/player/player.gd" id="2_tci3i"]
+[ext_resource type="Resource" uid="uid://bo0ms3ysgwd44" path="res://scenes/units/player/player_data/player_stats.tres" id="3_nrfbg"]
+
+[node name="Player" instance=ExtResource("1_base")]
+script = ExtResource("2_tci3i")
+stats = ExtResource("3_nrfbg")
+
+[node name="CollisionShape2D" parent="." index="3"]
+position = Vector2(0, -4.9)
+scale = Vector2(1, 2.6)

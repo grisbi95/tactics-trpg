@@ -1,0 +1,25 @@
+[gd_resource type="Resource" script_class="PlayerStats" load_steps=4 format=3 uid="uid://bo0ms3ysgwd44"]
+
+[ext_resource type="Script" uid="uid://dcgkg5yvf2hfp" path="res://custom_resources/player_stats.gd" id="1_nl5l7"]
+[ext_resource type="Resource" uid="uid://b02ftv7ammujh" path="res://scenes/units/player/player_data/starting_deck.tres" id="2_h1ao2"]
+[ext_resource type="Texture2D" uid="uid://ctbsfiadfpijv" path="res://arts/characters/turn_queue_portrait/novice_portrait.png" id="3_xduoq"]
+
+[resource]
+script = ExtResource("1_nl5l7")
+force = 0
+agilite = 0
+chance = 0
+intelligence = 0
+experience = 0
+experience_to_next_level = 100
+current_gold = 0
+unspent_attribute_points = 0
+starting_deck = ExtResource("2_h1ao2")
+cards_per_turn = 2
+unit_name = "GRISBIZER"
+turn_queue_icon = ExtResource("3_xduoq")
+level = 1
+max_health = 100
+max_movement_points = 99
+max_action_points = 99
+metadata/_custom_type_script = "uid://dcgkg5yvf2hfp"

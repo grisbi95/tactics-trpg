@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="EnemyRole" load_steps=3 format=3 uid="uid://d0wxhq5qasiq8"]
+
+[ext_resource type="Script" uid="uid://xper6awpnir7" path="res://scenes/units/enemies/scripts/enemy_affix.gd" id="1_oauvs"]
+[ext_resource type="Script" uid="uid://bh8tcbbgq2xt6" path="res://scenes/units/enemies/scripts/enemy_role.gd" id="1_role_script"]
+
+[resource]
+script = ExtResource("1_role_script")
+role_name = "Standard"
+base_action_points = 2
+base_movement_points = 2
+hp_rate = 1.01
+dmg_rate = 1.01
+dr_rate = 1.01
+allowed_affixes = Array[ExtResource("1_oauvs")]([])
+metadata/_custom_type_script = "uid://bh8tcbbgq2xt6"

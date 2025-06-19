@@ -1,0 +1,34 @@
+[gd_scene load_steps=7 format=3 uid="uid://cysun7i8uea35"]
+
+[ext_resource type="TileSet" uid="uid://b7ydiu6ywniae" path="res://assets/sprites/board/board_tileset.tres" id="1_ma2il"]
+[ext_resource type="Script" uid="uid://e7wvbmqhy2n" path="res://scripts/battle/board/board.gd" id="2_t2bup"]
+[ext_resource type="Script" uid="uid://cj57idbdfq7it" path="res://scripts/battle/board/core_layer.gd" id="3_vnl0l"]
+[ext_resource type="Script" uid="uid://dsbjm4vlssuo6" path="res://scripts/battle/board/border_layer.gd" id="4_border"]
+[ext_resource type="Script" uid="uid://bdodi1cr0bg5y" path="res://scripts/battle/board/obstacle_layer.gd" id="5_vnl0l"]
+[ext_resource type="Script" uid="uid://c30hfnyt7cwk7" path="res://scripts/battle/board/spawn_layer.gd" id="6_8eibi"]
+
+[node name="Board" type="TileMapLayer"]
+y_sort_enabled = true
+tile_set = ExtResource("1_ma2il")
+script = ExtResource("2_t2bup")
+core_width = 8
+core_height = 8
+max_obstacles = 5
+
+[node name="CoreLayer" type="TileMapLayer" parent="."]
+y_sort_enabled = true
+script = ExtResource("3_vnl0l")
+
+[node name="BorderLayer" type="TileMapLayer" parent="."]
+y_sort_enabled = true
+script = ExtResource("4_border")
+
+[node name="ObstacleLayer" type="TileMapLayer" parent="."]
+z_index = 3
+y_sort_enabled = true
+script = ExtResource("5_vnl0l")
+
+[node name="SpawnLayer" type="TileMapLayer" parent="."]
+z_index = 2
+y_sort_enabled = true
+script = ExtResource("6_8eibi")

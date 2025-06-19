@@ -1,0 +1,37 @@
+root = true
+
+# Configuration générale
+[*]
+charset = utf-8
+end_of_line = lf
+trim_trailing_whitespace = true
+max_line_length = 100
+
+# Scripts GDScript
+[*.gd]
+indent_style = tab
+indent_size = 4
+insert_final_newline = true
+
+# Fichiers de scène et ressources Godot
+[*.{tscn,tres,res}]
+indent_style = tab
+indent_size = 4
+insert_final_newline = false
+
+# Fichiers de configuration Godot
+[project.godot]
+indent_style = tab
+indent_size = 4
+
+# Fichiers texte et documentation
+[*.{md,txt}]
+indent_style = space
+indent_size = 2
+insert_final_newline = true
+
+# Fichiers JSON
+[*.{json,import}]
+indent_style = space
+indent_size = 2
+insert_final_newline = true

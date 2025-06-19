@@ -1,0 +1,312 @@
+---
+description:
+globs:
+alwaysApply: false
+---
+# Cursor Rules - TRPG Tactics (Godot 4.4)
+
+## 🎯 Contexte du Projet
+- **Type**: Tactical Role Playing Game (TRPG)
+- **Moteur**: Godot 4.4
+- **Niveau**: Développeur hobbyiste
+- **Philosophie**: Simple, clair et organisé sans over-engineering
+
+## 📁 Structure du Projet
+
+### Architecture des Dossiers
+```
+tactics/
+├── scenes/          # Scènes principales (.tscn)
+│   ├── game/        # Scènes de jeu (bataille, carte)
+│   ├── ui/          # Interfaces utilisateur
+│   └── characters/  # Scènes de personnages
+├── scripts/         # Scripts GDScript (.gd)
+│   ├── core/        # Systèmes principaux
+│   ├── characters/  # Scripts de personnages
+│   ├── ui/          # Scripts d'UI
+│   └── utilities/   # Utilitaires et helpers
+├── resources/       # Ressources réutilisables (.tres, .res)
+│   ├── data/        # Données de jeu (stats, items)
+│   └── themes/      # Thèmes UI
+├── assets/          # Assets media
+│   ├── sprites/     # Images et textures
+│   ├── audio/       # Sons et musiques
+│   └── fonts/       # Polices
+└── addons/          # Plugins Godot
+```
+
+## 💻 Conventions de Code GDScript
+
+### Nommage
+- **Classes**: PascalCase (`BattleManager`, `CharacterController`)
+- **Variables**: snake_case (`current_health`, `move_range`)
+- **Constantes**: SCREAMING_SNAKE_CASE (`MAX_LEVEL`, `DAMAGE_MULTIPLIER`)
+- **Fonctions**: snake_case (`calculate_damage()`, `move_to_position()`)
+- **Signaux**: snake_case avec préfixe descriptif (`health_changed`, `turn_ended`)
+- **Nœuds**: PascalCase dans l'éditeur, snake_case en code
+
+### Structure des Scripts
+```gdscript
+class_name MonNom
+extends Node
+
+#region SIGNAUX
+signal health_changed(new_value: int)
+signal died
+#endregion
+
+#region CONSTANTES
+const MAX_HEALTH: int = 100
+#endregion
+
+#region VARIABLES EXPORTÉES
+@export var speed: float = 200.0
+@export var damage: int = 10
+#endregion
+
+#region VARIABLES PRIVÉES
+var _current_health: int
+var _is_moving: bool = false
+#endregion
+
+#region FONCTIONS VIRTUELLES
+func _ready() -> void:
+	pass
+
+func _process(delta: float) -> void:
+	pass
+#endregion
+
+#region FONCTIONS PUBLIQUES
+func take_damage(amount: int) -> void:
+	pass
+#endregion
+
+#region FONCTIONS PRIVÉES
+func _calculate_something() -> int:
+	return 0
+#endregion
+```
+
+## 🎮 Bonnes Pratiques TRPG
+
+### Système de Combat
+- Utiliser des `Resource` pour les stats des personnages
+- Séparer la logique de combat de l'affichage
+- Implémenter un système de tour par tour avec `signals`
+- Utiliser des `enums` pour les types d'actions et d'unités
+
+### Gestion de la Grille
+- Créer une classe `GridManager` pour gérer les positions
+- Utiliser `Vector2i` pour les coordonnées de grille
+- Séparer les coordonnées monde des coordonnées grille
+
+### Sauvegarde/Chargement
+- Utiliser le système `Resource` de Godot pour les données persistantes
+- Sauvegarder uniquement les données essentielles
+- Implémenter un système de versioning simple
+
+## 🏗️ Architecture Flexible
+
+### Respect de la Hiérarchie
+- **Règle d'or**: Les dépendances ne remontent jamais dans la hiérarchie
+- **Communication descendante**: Parent → Enfant (appels directs)
+- **Communication ascendante**: Enfant → Parent (`signals` uniquement)
+- **Communication latérale**: Via un parent commun ou `signals`
+
+```gdscript
+# ✅ Bon - Communication par signals
+signal health_changed(new_health: int)
+signal player_died
+
+# ❌ Mauvais - Référence vers le parent
+# get_parent().get_node("UI").update_health()
+```
+
+### Découplage avec les Signals
+- **Observer Pattern**: Utiliser les `signals` pour découpler les systèmes
+- **Éviter**: Les références directes entre objets de même niveau
+- **Privilégier**: Un système de messaging via `signals`
+
+```gdscript
+# ✅ Bon - Découplé
+func _on_enemy_died(enemy: Enemy) -> void:
+	score += enemy.points
+	enemies_killed += 1
+	enemy_died.emit(enemy)
+
+# ❌ Mauvais - Couplage fort
+func _on_enemy_died(enemy: Enemy) -> void:
+	get_node("/root/GameManager").add_score(enemy.points)
+	get_node("/root/UI/HUD").update_enemies_count()
+```
+
+### Composants Réutilisables
+- **Principe**: Créer des composants indépendants
+- **Exemple**: `HealthComponent`, `MovementComponent`, `AttackComponent`
+- **Avantage**: Réutilisabilité et facilité de test
+
+## 🚀 Performance et Optimisation
+
+### Règles Générales
+- Éviter les `get_node()` répétés, utiliser `@onready var`
+- Préférer les `signals` aux vérifications constantes dans `_process()`
+- Utiliser `call_deferred()` pour les opérations lourdes
+- Limiter les effets visuels simultanés
+
+### Gestion Mémoire
+- Libérer les ressources avec `queue_free()`
+- Éviter les références circulaires
+- Utiliser `WeakRef` quand nécessaire
+
+## 🎨 Interface Utilisateur
+
+### Conventions UI
+- Utiliser des `Themes` pour la cohérence visuelle
+- Séparer les scripts UI de la logique de jeu
+- Implémenter une architecture MVC simple
+- Utiliser des `Control` nodes appropriés
+
+### Responsive Design
+- Utiliser les `Anchors` et `Margins` correctement
+- Tester sur différentes résolutions
+- Implémenter un système de scaling UI
+
+## 🔧 Développement et Debugging
+
+### Organisation du Code
+- Une classe par fichier
+- Maximum 300 lignes par script (indicatif)
+- Commentaires en français pour la logique complexe
+- Documentation des fonctions publiques
+
+### Tests et Debug
+- Utiliser `print_debug()` au lieu de `print()`
+- Implémenter des modes debug avec des variables exportées
+- Ajouter des assertions pour les cas critiques
+- Utiliser le debugger intégré de Godot
+
+## 📋 Standards de Commit
+
+### Messages de Commit
+- `feat:` nouvelles fonctionnalités
+- `fix:` corrections de bugs
+- `refactor:` refactoring de code
+- `ui:` modifications d'interface
+- `assets:` ajout/modification d'assets
+- `docs:` documentation
+
+Exemple: `feat: ajout du système de mouvement sur grille`
+
+## 🚫 Code Smells à Éviter
+
+### Fonctions Trop Longues
+- **Limite**: ~20 lignes maximum par fonction
+- **Principe**: Une fonction = une responsabilité
+- **Solution**: Diviser en fonctions plus petites et réutilisables
+
+```gdscript
+# ❌ Mauvais - Fonction qui fait trop de choses
+func take_damage(amount: int) -> void:
+	var final_damage = amount * defense_modifier
+	current_health -= final_damage
+	health_bar.value = current_health
+	if current_health <= 0:
+		is_alive = false
+		play_animation("death")
+	damage_sfx.play()
+	damage_particles.emit()
+
+# ✅ Bon - Fonctions spécialisées
+func take_damage(amount: int) -> void:
+	var final_damage = _calculate_damage(amount)
+	_update_health(final_damage)
+	_update_ui()
+	_play_effects()
+```
+
+### Listes de Paramètres Trop Longues
+- **Limite**: Maximum 4-5 paramètres
+- **Solutions**:
+  - Utiliser des `Resource` pour grouper les données
+  - Créer des fonctions plus spécifiques
+  - Utiliser des dictionnaires pour les options
+
+```gdscript
+# ❌ Mauvais - Trop de paramètres
+func attack(target, damage, type, critical, elemental_type, status_effect, duration):
+	pass
+
+# ✅ Bon - Utiliser une Resource
+class_name AttackData extends Resource
+@export var damage: int
+@export var type: String
+@export var is_critical: bool
+
+func attack(target: Node, attack_data: AttackData) -> void:
+	pass
+```
+
+### Code Dupliqué
+- **Règle**: DRY (Don't Repeat Yourself)
+- **Solution**: Créer des fonctions utilitaires ou classes partagées
+
+### God Objects (Objets Dieu)
+- **Problème**: Un objet qui fait tout
+- **Solution**: Séparer les responsabilités, utiliser des `signals` pour la communication
+
+### Sur-ingénierie
+- **Principe**: KISS (Keep It Simple, Stupid)
+- **Éviter**: Patterns complexes non nécessaires
+- **Privilégier**: Solutions simples qui fonctionnent
+
+## ✅ Checklist Avant Commit
+
+- [ ] Le code suit les conventions de nommage
+- [ ] Pas de `print()` oublié (utiliser `print_debug()`)
+- [ ] Les variables exportées ont des valeurs par défaut sensées
+- [ ] Les signaux sont bien documentés
+- [ ] Le code est commenté si nécessaire
+- [ ] Pas de warnings dans l'éditeur
+- [ ] Les scènes sont organisées logiquement
+
+## 🎯 Objectifs de Simplicité
+
+### Pour un Développeur Hobbyiste
+1. **Clarté avant performance**: Code lisible > code optimisé
+2. **Fonctionnalité avant perfection**: Faire fonctionner > rendre parfait
+3. **Itération rapide**: Petites fonctionnalités testables
+4. **Documentation minimale**: Commenter le "pourquoi", pas le "comment"
+
+### Architecture KISS (Keep It Simple, Stupid)
+- Pas plus de 3 niveaux d'héritage
+- Éviter les patterns complexes si non nécessaires
+- Préférer la composition à l'héritage
+- Une responsabilité par classe
+
+### Approche Itérative
+1. **Commencer simple**: Implémentez d'abord la version basique qui fonctionne
+2. **Identifier les pain points**: Attendez de ressentir la douleur avant d'optimiser
+3. **Refactorer intelligemment**:
+   - Quelles fonctionnalités sont **requises** ?
+   - Quelles fonctionnalités sont **probablement nécessaires** ?
+   - Quel est l'**impact et la portée** du code ?
+4. **Éviter la sur-optimisation précoce**: Un jeu médiocre qui sort > un jeu parfait qui ne sort jamais
+
+### Questions à se Poser
+- "Cette complexité est-elle justifiée par un besoin réel ?"
+- "Puis-je résoudre ce problème plus simplement ?"
+- "Cette abstraction sera-t-elle réellement réutilisée ?"
+- "Le gain en flexibilité vaut-il la complexité ajoutée ?"
+
+## 📚 Ressources Recommandées
+
+Ces règles s'inspirent des meilleures pratiques de développement de jeux :
+- [Code Smells à éviter](mdc:https:/shaggydev.com/2023/01/16/code-smells) - Identifier et corriger les problèmes de code
+- [Code Flexible](mdc:https:/shaggydev.com/2022/09/13/flexible-code) - Écrire du code adaptable et maintenable
+- [Observer Pattern](mdc:https:/shaggydev.com/2022/06/01/observer-pattern) - Communication découplée avec les signals
+- [Clean Code](mdc:https:/shaggydev.com/2022/05/04/clean-code) - Principes de code propre
+
+---
+
+*Ce fichier sera mis à jour selon l'évolution du projet. Restez simple, restez organisé !*
