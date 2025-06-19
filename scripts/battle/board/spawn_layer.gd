@@ -36,29 +36,13 @@ func generate(core_size: Vector2i, anchor: Vector2i, player_tile_id: Vector2i, e
 	_build_valid_cells(core_size, anchor)
 	_initialize_forbidden_grid(forbidden_cells)
 
-	# Variables de travail pour la génération
-	var current_min_distance = min_distance
-	var max_attempts = (player_size + enemy_size) * MAX_ATTEMPTS_MULTIPLIER
-	var attempts = 0
+	# Tenter le placement avec réduction progressive de distance
+	if _try_generate_spawns_with_distance(player_size, enemy_size, min_distance):
+		_draw_spawn_zones(player_tile_id, enemy_tile_id)
+		spawns_generated.emit()
+		return
 
-	# Boucle principale avec réduction progressive de la distance minimale
-	while current_min_distance >= 1 and attempts < max_attempts:
-		attempts += 1
-
-		# Tenter de placer les deux zones
-		if _attempt_spawn_placement(player_size, enemy_size, current_min_distance):
-			# Placement réussi, dessiner les zones
-			_draw_spawn_zones(player_tile_id, enemy_tile_id)
-			spawns_generated.emit()
-			return
-
-		# Si échec après plusieurs tentatives, réduire la distance minimale
-		if attempts % MAX_ATTEMPTS_MULTIPLIER == 0:
-			current_min_distance -= 1
-			if current_min_distance >= 1:
-				print_debug("SpawnLayer: Réduction de la distance minimale à %d" % current_min_distance)
-
-	# Placement de dernier recours - accepter n'importe quelle position valide
+	# Placement de dernier recours
 	_fallback_placement(player_size, enemy_size, player_tile_id, enemy_tile_id)
 	spawns_generated.emit()
 
@@ -120,6 +104,28 @@ func _initialize_forbidden_grid(forbidden_cells: Array[Vector2i]) -> void:
 	_forbidden_cells.clear()
 	for cell in forbidden_cells:
 		_forbidden_cells[cell] = true
+
+func _try_generate_spawns_with_distance(player_size: int, enemy_size: int, min_distance: int) -> bool:
+	"""Tente de générer les spawns avec réduction progressive de la distance."""
+	var current_min_distance = min_distance
+	var max_attempts = (player_size + enemy_size) * MAX_ATTEMPTS_MULTIPLIER
+	var attempts = 0
+
+	# Boucle principale avec réduction progressive de la distance minimale
+	while current_min_distance >= 1 and attempts < max_attempts:
+		attempts += 1
+
+		# Tenter de placer les deux zones
+		if _attempt_spawn_placement(player_size, enemy_size, current_min_distance):
+			return true
+
+		# Si échec après plusieurs tentatives, réduire la distance minimale
+		if attempts % MAX_ATTEMPTS_MULTIPLIER == 0:
+			current_min_distance -= 1
+			if current_min_distance >= 1:
+				print_debug("SpawnLayer: Réduction de la distance minimale à %d" % current_min_distance)
+
+	return false
 
 func _attempt_spawn_placement(player_size: int, enemy_size: int, min_distance: int) -> bool:
 	"""Tente de placer les deux zones de spawn avec la distance minimale."""

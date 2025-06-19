@@ -45,6 +45,12 @@ func generate(core_size: Vector2i, anchor: Vector2i, obstacle_tile_coord: Vector
 
 	_initialize_occupied_grid(reserved_cells)
 
+	# Générer les obstacles avec retry
+	_generate_obstacles_with_retry(max_obstacles, size_probabilities, obstacle_tile_coord, rng)
+	obstacles_generated.emit()
+
+func _generate_obstacles_with_retry(max_obstacles: int, size_probabilities: PackedFloat32Array, obstacle_tile_coord: Vector2i, rng: RandomNumberGenerator) -> void:
+	"""Génère les obstacles avec logique de retry."""
 	var obstacles_placed = 0
 	var attempts = 0
 	var max_attempts = max_obstacles * MAX_ATTEMPTS_MULTIPLIER
@@ -69,8 +75,6 @@ func generate(core_size: Vector2i, anchor: Vector2i, obstacle_tile_coord: Vector
 			_place_obstacle(obstacle_cells, obstacle_tile_coord)
 			_mark_cells_as_occupied(obstacle_cells)
 			obstacles_placed += 1
-
-	obstacles_generated.emit()
 
 func clear_layer() -> void:
 	"""Efface complètement cette couche."""
@@ -120,10 +124,10 @@ func _build_available_cells(core_size: Vector2i, anchor: Vector2i) -> void:
 		for y in range(core_size.y):
 			_core_cells.append(Vector2i(anchor.x + x, anchor.y + y))
 
-	# Cellules de la Bordure (approximation simple - dans un vrai cas, on pourrait interroger BorderLayer)
-	var border_size = 3  # Estimation basée sur max_border_size
-	for x in range(anchor.x - border_size, anchor.x + core_size.x + border_size):
-		for y in range(anchor.y - border_size, anchor.y + core_size.y + border_size):
+	# Cellules de la Bordure - estimation conservative
+	var estimated_border_size = 3  # Estimation basée sur max_border_size typique
+	for x in range(anchor.x - estimated_border_size, anchor.x + core_size.x + estimated_border_size):
+		for y in range(anchor.y - estimated_border_size, anchor.y + core_size.y + estimated_border_size):
 			var cell = Vector2i(x, y)
 			if not _core_cells.has(cell):
 				_border_cells.append(cell)

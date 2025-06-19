@@ -76,6 +76,13 @@ func _initialize_rng() -> void:
 
 func _validate_configuration() -> void:
 	"""Valide les prérequis de configuration."""
+	_validate_basic_config()
+	_validate_border_config()
+	_validate_obstacle_config()
+	_validate_spawn_config()
+
+func _validate_basic_config() -> void:
+	"""Valide la configuration de base."""
 	if board_tiles.size() < 3:
 		push_error("Board: board_tiles doit contenir au moins 3 coordonnées de tuiles")
 		return
@@ -88,7 +95,8 @@ func _validate_configuration() -> void:
 		push_error("Board: core_width et core_height doivent être positifs")
 		return
 
-	# Validation des nouvelles variables BorderLayer
+func _validate_border_config() -> void:
+	"""Valide la configuration des bordures."""
 	if max_border_size < 1:
 		push_error("Board: max_border_size doit être supérieur ou égal à 1")
 		return
@@ -102,7 +110,8 @@ func _validate_configuration() -> void:
 			push_error("Board: probability_border_size[%d] doit être dans [0, 1]" % i)
 			return
 
-	# Validation des nouvelles variables ObstacleLayer
+func _validate_obstacle_config() -> void:
+	"""Valide la configuration des obstacles."""
 	if max_obstacles < 0:
 		push_error("Board: max_obstacles doit être supérieur ou égal à 0")
 		return
@@ -116,7 +125,8 @@ func _validate_configuration() -> void:
 			push_error("Board: obstacle_size_probabilities[%d] doit être dans [0, 1]" % i)
 			return
 
-	# Validation des nouvelles variables SpawnLayer
+func _validate_spawn_config() -> void:
+	"""Valide la configuration des spawns."""
 	if spawn_player_size < 1:
 		push_error("Board: spawn_player_size doit être supérieur ou égal à 1")
 		return
@@ -176,12 +186,7 @@ func _generate_board() -> void:
 	var obstacle_cells = _get_layer_cells(_obstacle_layer)
 	forbidden_cells.append_array(obstacle_cells)
 	# Ajouter l'anneau de sécurité autour des obstacles
-	for obstacle_cell in obstacle_cells:
-		for dx in range(-1, 2):
-			for dy in range(-1, 2):
-				var neighbor = Vector2i(obstacle_cell.x + dx, obstacle_cell.y + dy)
-				if not forbidden_cells.has(neighbor):
-					forbidden_cells.append(neighbor)
+	_add_security_ring(obstacle_cells, forbidden_cells)
 
 	_spawn_layer.generate(core_size, _anchor, spawn_player_tile, spawn_enemy_tile, spawn_player_size, spawn_enemy_size, spawn_min_distance, forbidden_cells)
 
@@ -197,4 +202,13 @@ func _get_layer_cells(layer: TileMapLayer) -> Array[Vector2i]:
 		cells.append(cell)
 
 	return cells
+
+func _add_security_ring(source_cells: Array[Vector2i], target_array: Array[Vector2i]) -> void:
+	"""Ajoute un anneau de sécurité autour des cellules données."""
+	for cell in source_cells:
+		for dx in range(-1, 2):
+			for dy in range(-1, 2):
+				var neighbor = Vector2i(cell.x + dx, cell.y + dy)
+				if not target_array.has(neighbor):
+					target_array.append(neighbor)
 #endregion
